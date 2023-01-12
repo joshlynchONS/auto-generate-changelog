@@ -161,6 +161,7 @@ class GithubChangelog:
         self.replace_empty_release_info = replace_empty_release_info
         # Use PyGithub to login to the repository
         # References: https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html#github.Repository.Repository
+        print('access token is ' + access_token)
         g = github.Github(access_token)
         self.repo = g.get_repo(repo_name)
         self.author = github.GithubObject.NotSet if committer == '' else github.InputGitAuthor(
@@ -281,7 +282,7 @@ class GithubChangelog:
             self.changelog = base64.b64decode(base).decode('utf-8')
             self.analyze_changelog()
 
-    def analyze_changelog(self):
+    def analyze_changelog(self): 
         # analyze changelog
         body_content = ''
         if self.changelog.startswith(
