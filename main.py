@@ -409,6 +409,12 @@ class GithubChangelog:
         else:
             if self.file_exists:
                 print(f'[INFO] Update changelog')
+                print(self.path)
+                print(self.commit_message)
+                print(changelog)
+                print(self.sha)
+                print(self.branch)
+                print(self.author)
                 self.repo.update_file(self.path, self.commit_message,
                                       changelog, self.sha, self.branch,
                                       self.author)
