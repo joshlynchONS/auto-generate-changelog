@@ -435,6 +435,11 @@ class GithubChangelog:
                                 self.path, self.branch)
                         except github.GithubException as e:
                             if e.status == 404:
+                                print(self.path)
+                                print(self.commit_message)
+                                print(changelog)
+                                print(self.branch)
+                                print(self.author)
                                 self.repo.create_file(self.path,
                                                       self.commit_message,
                                                       changelog, self.branch,
