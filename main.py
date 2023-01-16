@@ -421,6 +421,11 @@ class GithubChangelog:
             else:
                 print(f'[INFO] Create changelog.')
                 try:
+                    print(self.path)
+                    print(self.commit_message)
+                    print(changelog)
+                    print(self.branch)
+                    print(self.author)
                     self.repo.create_file(self.path, self.commit_message,
                                           changelog, self.branch, self.author)
                 except github.GithubException as e:
