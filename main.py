@@ -673,6 +673,10 @@ def main():
     UNRELEASED_COMMITS = get_inputs('UNRELEASED_COMMITS')
     REGENERATE_COUNT = int(get_inputs('REGENERATE_COUNT'))
     REPLACE_EMPTY_RELEASE_INFO = get_inputs('REPLACE_EMPTY_RELEASE_INFO')
+    
+    print('repo name: ', REPO_NAME)
+    print('PATH: ', PATH)
+    print('BRANCH: ', BRANCH)
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH,
                                 PULL_REQUEST, COMMIT_MESSAGE, COMMITTER,
                                 UNRELEASED_COMMITS == 'true', REGENERATE_COUNT,
