@@ -199,13 +199,12 @@ class GithubChangelog:
         tags_sha = {}
         for tag in tags:
             tags_sha[tag.name] = tag.commit.sha
+        print('tags_sha: ', tags_sha)
         # get all meta data for releases
         for release in releases:
-            commit_sha = tags_sha[
-                release.tag_name] if release.tag_name in tags_sha else ''
-            release_content = self.release_in_changelog[
-                release.
-                tag_name] if release.tag_name in self.release_in_changelog and release.tag_name not in regenerate_releases else ''
+            commit_sha = tags_sha[release.tag_name] if release.tag_name in tags_sha else ''
+            print('commit_sha: ', commit_sha)
+            release_content = self.release_in_changelog[release.tag_name] if release.tag_name in self.release_in_changelog and release.tag_name not in regenerate_releases else ''
             self.releases[release.tag_name] = {
                 'html_url': release.html_url,
                 'body': re.sub(r'\r\n', r'\n', release.body).strip('\n'),
@@ -217,6 +216,7 @@ class GithubChangelog:
             self.releases[x]['commit_sha']: x
             for x in self.releases
         }
+        print('release_commit_sha_list: ', release_commit_sha_list)
 
         cur_release = 'Unreleased'
         # Get commits
@@ -225,6 +225,7 @@ class GithubChangelog:
         if len(regenerate_releases) > 0:
             for commit in commits:
                 if commit.sha in release_commit_sha_list:
+                    print('commit.sha: ', commit.sha)
                     if cur_release in regenerate_releases:
                         release_content, status_code = self.get_release_content(
                             cur_release, selected_commits)
@@ -409,23 +410,12 @@ class GithubChangelog:
         else:
             if self.file_exists:
                 print(f'[INFO] Update changelog')
-                print(self.path)
-                print(self.commit_message)
-                print(changelog)
-                print(self.sha)
-                print(self.branch)
-                print(self.author)
                 self.repo.update_file(self.path, self.commit_message,
                                       changelog, self.sha, self.branch,
                                       self.author)
             else:
                 print(f'[INFO] Create changelog.')
                 try:
-                    print(self.path)
-                    print(self.commit_message)
-                    print(changelog)
-                    print(self.branch)
-                    print(self.author)
                     self.repo.create_file(self.path, self.commit_message,
                                           changelog, self.branch, self.author)
                 except github.GithubException as e:
@@ -440,11 +430,6 @@ class GithubChangelog:
                                 self.path, self.branch)
                         except github.GithubException as e:
                             if e.status == 404:
-                                print(self.path)
-                                print(self.commit_message)
-                                print(changelog)
-                                print(self.branch)
-                                print(self.author)
                                 self.repo.create_file(self.path,
                                                       self.commit_message,
                                                       changelog, self.branch,
@@ -674,9 +659,6 @@ def main():
     REGENERATE_COUNT = int(get_inputs('REGENERATE_COUNT'))
     REPLACE_EMPTY_RELEASE_INFO = get_inputs('REPLACE_EMPTY_RELEASE_INFO')
     
-    print('repo name: ', REPO_NAME)
-    print('PATH: ', PATH)
-    print('BRANCH: ', BRANCH)
     changelog = GithubChangelog(ACCESS_TOKEN, REPO_NAME, PATH, BRANCH,
                                 PULL_REQUEST, COMMIT_MESSAGE, COMMITTER,
                                 UNRELEASED_COMMITS == 'true', REGENERATE_COUNT,
