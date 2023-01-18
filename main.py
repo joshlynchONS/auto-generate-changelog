@@ -226,6 +226,7 @@ class GithubChangelog:
             for commit in commits:
                 if commit.sha in release_commit_sha_list:
                     print('commit.sha: ', commit.sha)
+                    print('commit message: ', commit.commit.message.split("\n\n")[0])
                     if cur_release in regenerate_releases:
                         release_content, status_code = self.get_release_content(
                             cur_release, selected_commits)
